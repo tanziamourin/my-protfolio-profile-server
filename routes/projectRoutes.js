@@ -1,17 +1,27 @@
 import express from "express";
-import { getDB } from "../config/db.js";
+import Project from "../models/Project.js";
+
 const router = express.Router();
 
+// Add a project
 router.post("/", async (req, res) => {
-  const db = await getDB();
-  const result = await db.collection("projects").insertOne(req.body);
-  res.send(result);
+  try {
+    const project = new Project(req.body);
+    const result = await project.save();
+    res.send(result);
+  } catch (err) {
+    res.status(500).send({ error: "Failed to add project" });
+  }
 });
 
+// Get all projects
 router.get("/", async (req, res) => {
-  const db = await getDB();
-  const projects = await db.collection("projects").find().sort({ _id: -1 }).toArray();
-  res.send(projects);
+  try {
+    const projects = await Project.find().sort({ _id: -1 });
+    res.send(projects);
+  } catch (err) {
+    res.status(500).send({ error: "Failed to fetch projects" });
+  }
 });
 
 export default router;
