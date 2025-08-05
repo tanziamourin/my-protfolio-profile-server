@@ -13,7 +13,7 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: "http://localhost:5173", // frontend
+  origin: "https://tanzia-s-profile.web.app", // frontend
   credentials: true
 }));
 app.use(express.json());
